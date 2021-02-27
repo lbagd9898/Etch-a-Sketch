@@ -1,0 +1,144 @@
+<html>
+    <head>
+        <title>
+            Etch-a-Sketch
+        </title>
+        <link rel="stylesheet" href="etchasketch.css">
+    </head>
+    <body>
+        <div id="header">
+            <h1>Etch-A-Sketch Baby!</h1>
+        </div>
+        <div id="container">
+        </div>
+        <div id="footer">
+            <button id="clear">Clear</button>
+            <button id="change">Change Box Size</button>
+            <button id="color">Rainbow</button>
+        </div>
+        <script>
+            const container = document.querySelector('#container');
+
+
+            makeGrid(8);
+
+            function makeGrid(rows){
+                let array = [];
+                for (i=0; i < rows; i++){
+                    let row = document.createElement("div");
+                    row.className = "row";
+                    array.push(row);
+                    container.appendChild(row);
+                };
+                // console.log(array);
+                for (i=0; i < rows; i++){
+                    for (c = 0; c < rows; c++){
+                    let col = document.createElement('div');
+                    col.className = "col";
+                    array[i].append(col);
+                    };
+                };
+                let color = document.querySelector("#color");
+                if (color.innerHTML === "Rainbow"){
+                    document.querySelectorAll(".col").forEach(item => {
+                    item.addEventListener('mouseover',  event => {
+                        item.style.backgroundColor = "blue";
+                    });
+                 });
+                } else if (color.innerHTML === "Blue"){
+                    document.querySelectorAll(".col").forEach(item => {
+                    item.addEventListener('mouseover',  event => {
+                        let color = randomColorGenerator();
+                        console.log(color)
+                        item.style.backgroundColor = color;
+                    });
+                 });
+                }
+            };
+
+            function drawBlue(){
+                
+            }
+
+            document.querySelector('#color').addEventListener("click", changeColor);
+
+            function changeColor(){
+                let button = document.querySelector('#color');
+                if (button.innerHTML === "Rainbow"){
+                    button.innerHTML = "Blue";
+                    document.querySelectorAll(".col").forEach(item => {
+                    item.addEventListener('mouseover',  event => {
+                        let color = randomColorGenerator();
+                        console.log(color)
+                        item.style.backgroundColor = color;
+        
+                });
+            });
+                }
+                else if (button.innerHTML === "Blue"){
+                    button.innerHTML = "Rainbow";
+                    document.querySelectorAll(".col").forEach(item => {
+                    item.addEventListener('mouseover',  event => {
+                        item.style.backgroundColor = "blue";
+        
+                    });
+                });
+                }
+            }
+
+            function randomColorGenerator(){
+                let r = Math.floor(Math.random() * 256);
+                let g = Math.floor(Math.random() * 256);
+                let b = Math.floor(Math.random() * 256);
+                return "rgb(" + r + "," + b + "," + g + ")";
+            }
+
+
+            document.querySelector('#clear').addEventListener("click", Clear);
+            
+            function Clear(){
+                console.log("hi")
+                cols = document.querySelectorAll(".col");
+                cols.forEach(item =>{
+                    item.style.backgroundColor = "white";
+                });
+            };
+
+            document.querySelector('#change').addEventListener("click", changeRows) 
+            
+            function changeRows(){
+                let number = prompt("Pick a number between 1 and 64:");
+                if (number === null){
+                    return;
+                }
+                number = parseInt(number);
+                if (0 < number && number <= 64){
+                    Clear(); 
+                    removeGrid();
+                    makeGrid(number);
+                }
+                else{
+                    alert("Make sure your number is between 1 and 64!");
+                    changeRows();
+                    return;
+                }
+            };
+
+
+
+            function removeGrid(){
+                let cols = document.querySelectorAll('.col');
+                let rows = document.querySelectorAll('.row');
+                cols.forEach(item => {
+                    console.log(item)
+                    item.remove();
+                })
+                rows.forEach(item => {
+                    item.remove()
+                })
+            };
+            
+        
+        </script>
+    </body>
+</html>
